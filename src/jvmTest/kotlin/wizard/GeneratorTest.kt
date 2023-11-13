@@ -3,6 +3,7 @@ package wizard
 import wizard.files.rawAndroid.BuildSrcVersionsFile
 import wizard.files.GradleLibsVersion
 import wizard.files.app.ModuleBuildGradleKts
+import wizard.files.rawAndroid.BuildSrcDepsFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -668,7 +669,7 @@ class GeneratorTest {
     }
 
     @Test
-    fun buildBuildSRCVersionsFile(){
+    fun buildBuildSRCVersionsFile() {
         val info = ProjectInfo(
             packageId = "org.test",
             platforms = setOf(ComposePlatform.Android)
@@ -683,6 +684,22 @@ class GeneratorTest {
                 }
                 
             """.trimIndent(), files.first { it is BuildSrcVersionsFile }.content
+        )
+    }
+
+    @Test
+    fun buildBuildSRCDepsFile() {
+        val info = ProjectInfo(
+            packageId = "org.test",
+            platforms = setOf(ComposePlatform.Android)
+        )
+        val files = info.buildFiles()
+        assertEquals(
+            "object Dependencies {" +
+                    "\n\tval androidx-appcompat by lazy { \"\${Versions.ANDROIDX-APPCOMPAT}}" +
+                    "\n\tval androidx-activityCompose by lazy { \"\${Versions.ANDROIDX-ACTIVITYCOMPOSE}}" +
+                    "\n\tval compose-uitooling by lazy { \"\${Versions.COMPOSE-UITOOLING}}" +
+                "\n}".trimMargin().trimIndent(), files.first { it is BuildSrcDepsFile }.content.trimMargin().trimIndent()
         )
     }
 }
