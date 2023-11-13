@@ -61,6 +61,8 @@ import wizard.MokoMvvm
 import wizard.MultiplatformSettings
 import wizard.Napier
 import wizard.ProjectInfo
+import wizard.Retrofit
+import wizard.Room
 import wizard.SQLDelightDriverAndroid
 import wizard.SQLDelightDriverJs
 import wizard.SQLDelightDriverJvm
@@ -160,11 +162,13 @@ val Content = FC<AppProps> { props ->
                     }
 
                     val deps = setOf(
+                        DependencyBox(Retrofit, true),
                         DependencyBox(LibresCompose, true),
                         DependencyBox(Voyager, true),
                         DependencyBox(ImageLoader, true),
                         DependencyBox(listOf(Napier, Kermit), true),
                         DependencyBox(listOf(BuildConfigPlugin, BuildKonfigPlugin), true),
+                        DependencyBox(Room.Runtime, false),
                         DependencyBox(KotlinxCoroutinesCore, true),
                         DependencyBox(MokoMvvm, false),
                         DependencyBox(KtorCore, false),

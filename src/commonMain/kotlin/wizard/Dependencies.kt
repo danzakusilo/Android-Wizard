@@ -320,3 +320,76 @@ val BuildKonfigPlugin = Dependency(
     catalogName = "buildKonfig",
     platforms = emptySet()
 )
+
+val Retrofit = Dependency(
+    title = "Retrofit",
+    description = "networking library",
+    url = "https://square.github.io/retrofit/",
+    group = "com.squareup.retrofit2",
+    id = "retrofit",
+    version = "2.9.0",
+    catalogVersionName = "retrofit",
+    catalogName = "retrofit",
+    platforms = setOf(ComposePlatform.Android)
+)
+
+object Hilt {
+
+    private const val Version = "2.44"
+
+    val Base = Dependency(
+        title = "Hilt",
+        description = "Hilt",
+        url = "https://developer.android.com/training/dependency-injection/hilt-android#kts",
+        group = "com.google.dagger",
+        id = "hilt-android",
+        version = Version,
+        catalogVersionName = "Hilt",
+        catalogName = "Hilt",
+        platforms = setOf(ComposePlatform.Android)
+    )
+
+    val Kapt = Dependency(
+        title = "HiltKapt",
+        description = "HiltKapt",
+        url = "https://developer.android.com/training/dependency-injection/hilt-android#kts",
+        group = "com.google.dagger",
+        id = "hilt-android-compiler",
+        version = Version,
+        catalogVersionName = "HiltKapt",
+        catalogName = "HiltKapt",
+        platforms = setOf(ComposePlatform.Android)
+    )
+
+}
+
+object Room {
+
+    private const val Version = "2.6.0"
+
+    val Runtime = Dependency(
+        title = "Room",
+        description = "Wrapper on SQLite for local storage",
+        url = "https://developer.android.com/jetpack/androidx/releases/room",
+        group = "androidx.room",
+        id = "room-runtime",
+        version = Version,
+        catalogVersionName = "room",
+        catalogName = "room",
+        platforms = setOf(ComposePlatform.Android)
+    )
+
+    val AnnotationProcessor = Dependency(
+        title = "RoomAnnotationProcessor",
+        description = "",
+        url = "https://developer.android.com/jetpack/androidx/releases/room",
+        group = "androidx.room",
+        id = "room-compiler",
+        version = Version,
+        catalogVersionName = "roomAnnotationProcessor",
+        catalogName = "roomAnnotationProcessor",
+        platforms = setOf(ComposePlatform.Android)
+    )
+}
+
+
