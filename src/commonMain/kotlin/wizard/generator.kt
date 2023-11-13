@@ -2,6 +2,7 @@ package wizard
 
 import wizard.files.*
 import wizard.files.app.*
+import wizard.files.rawAndroid.BuildSrcVersionsFile
 
 fun ProjectInfo.buildFiles() = buildList {
     add(Gitignore())
@@ -21,6 +22,7 @@ fun ProjectInfo.buildFiles() = buildList {
     add(ColorKt(this@buildFiles))
     add(ThemeKt(this@buildFiles))
     add(AppKt(this@buildFiles))
+    add(BuildSrcVersionsFile(this@buildFiles))
 
     if (this@buildFiles.dependencies.contains(ApolloPlugin)) {
         add(GraphQLSchema())

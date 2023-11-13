@@ -1,5 +1,6 @@
 package wizard
 
+import wizard.files.rawAndroid.BuildSrcVersionsFile
 import wizard.files.GradleLibsVersion
 import wizard.files.app.ModuleBuildGradleKts
 import kotlin.test.Test
@@ -663,6 +664,25 @@ class GeneratorTest {
 
             """.trimIndent(),
             files.first { it is ModuleBuildGradleKts }.content
+        )
+    }
+
+    @Test
+    fun buildBuildSRCVersionsFile(){
+        val info = ProjectInfo(
+            packageId = "org.test",
+            platforms = setOf(ComposePlatform.Android)
+        )
+        val files = info.buildFiles()
+        assertEquals(
+            """
+                object Versions {
+                    const val ANDROIDX-APPCOMPAT = 1.6.1
+                    const val ANDROIDX-ACTIVITYCOMPOSE = 1.7.2
+                    const val COMPOSE-UITOOLING = 1.5.1
+                }
+                
+            """.trimIndent(), files.first { it is BuildSrcVersionsFile }.content
         )
     }
 }
