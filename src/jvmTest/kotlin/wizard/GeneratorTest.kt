@@ -3,6 +3,7 @@ package wizard
 import wizard.files.rawAndroid.BuildSrcVersionsFile
 import wizard.files.GradleLibsVersion
 import wizard.files.app.ModuleBuildGradleKts
+import wizard.files.rawAndroid.AppGradle
 import wizard.files.rawAndroid.BuildSrcDepsFile
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -701,5 +702,89 @@ class GeneratorTest {
                     "\n\tval compose-uitooling by lazy { \"\${Versions.COMPOSE-UITOOLING}}" +
                 "\n}".trimMargin().trimIndent(), files.first { it is BuildSrcDepsFile }.content.trimMargin().trimIndent()
         )
+    }
+
+    @Test
+    fun BuildAppGradleFile(){
+        val info = ProjectInfo(
+            packageId = "org.test",
+            platforms = setOf(ComposePlatform.Android)
+        )
+        val files = info.buildFiles()
+        assertEquals("""
+            import BuildPlugins.android
+
+            plugins {
+                id("com.android.application")
+                id("kotlin-android")
+                kotlin("kapt")
+                id("dagger.hilt.android.plugin")
+            }
+
+            android {
+                compileSdk = ConfigInfo.compileSdkVersion
+                buildToolsVersion = ConfigInfo.buildToolsVersion
+
+                defaultConfig {
+                    applicationId = "com.example.moneytracking"
+                    minSdk = ConfigInfo.minSdkVersion
+                    targetSdk = ConfigInfo.targetSdkVersion
+                    versionCode = ConfigInfo.versionCode
+                    versionName = ConfigInfo.versionName
+
+
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                }
+
+                kapt {
+                    correctErrorTypes = true
+                }
+
+                buildTypes {
+                    release {
+                        isMinifyEnabled = true
+                        proguardFiles(
+                            getDefaultProguardFile("proguard-android-optimize.txt"),
+                            "proguard-rules.pro"
+                        )
+                    }
+                }
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                }
+                kotlinOptions {
+                    jvmTarget = "1.8"
+                }
+                buildFeatures {
+                    compose = true
+                }
+                composeOptions {
+                    kotlinCompilerExtensionVersion = Versions.COMPOSE
+                }
+
+                packagingOptions {
+                    resources {
+                        excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                    }
+                }
+
+            }
+
+            dependencies {
+
+                implementation("androidx.core:core-ktx:1.7.0")
+                implementation(Deps.appCompat)
+                implementation(Deps.materialDesign)
+                implementation(Deps.composeUI)
+                implementation(Deps.composeMaterial)
+                implementation(Deps.composePreview)
+                implementation(Deps.lifeCycle)
+                implementation(Deps.composeActivity)
+                implementation(Deps.hilt)
+                kapt(Deps.hiltCompiler)
+                testImplementation (Deps.junit)
+            }
+        """.trimIndent(), files.first { it is AppGradle }.content)
     }
 }

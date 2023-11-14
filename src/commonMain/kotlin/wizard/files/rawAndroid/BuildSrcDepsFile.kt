@@ -2,6 +2,7 @@ package wizard.files.rawAndroid
 
 import wizard.ProjectFile
 import wizard.ProjectInfo
+import wizard.catalogAccessor
 
 class BuildSrcDepsFile(info: ProjectInfo): ProjectFile{
     override val path: String
@@ -11,7 +12,7 @@ class BuildSrcDepsFile(info: ProjectInfo): ProjectFile{
         info.dependencies.forEach {
             val versionNameReference = it.catalogVersionName.uppercase()
             appendLine(
-                "   val ${it.catalogName} by lazy { \"\${Versions.${versionNameReference}}}"
+                "   val ${it.catalogAccessor} by lazy { \"\${Versions.${versionNameReference}}}"
             )
         }
         appendLine("}")
